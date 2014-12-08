@@ -60,7 +60,7 @@ resolution="_1920x1080"
 extension=".jpg"
 
 #The URL for the desired pic resolution
-pic_desired=$bing$(echo $(wget -q -O - $xmlURL) | grep -oP "<urlBase>(.*)</urlBase>" | cut -d ">" -f 2 | cut -d "<" -f 1)$desiredresolution$extension
+pic_desired=$bing$(echo $(wget -q -O - $xmlURL) | grep -oP "<urlBase>(.*)</urlBase>" | cut -d ">" -f 2 | cut -d "<" -f 1)$resolution$extension
 
 #Form the URL for the default pic resolution
 pic_default=$bing$(echo $(wget -q -O - $xmlURL) | grep -oP "<url>(.*)</url>" | cut -d ">" -f 2 | cut -d "<" -f 1)
@@ -78,11 +78,11 @@ options="--bg-scale"
 #################################################################
 if wget -q --spider "$pic_desired"
 then
-    pic_name=${pic_desired##*/}
-    curl -s -o $directory$pic_name $pic_desired
+	pic_name=${pic_desired##*/}
+	wget -q -O $directory$pic_name $pic_desired
 else
-    pic_name=${pic_default##*/}
-    curl -s -o $directory$pic_name $pic_default
+	pic_name=${pic_default##*/}
+	wget -q -O $directory$pic_name $pic_default
 fi
 
 #################################################################
