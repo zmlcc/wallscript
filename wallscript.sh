@@ -7,6 +7,21 @@
 #################################################################
 
 #################################################################
+# Check required programs are installed 
+#################################################################
+if which wget > /dev/null;
+ then echo "wget Installed"
+ else echo "wget Not Installed"
+ exit
+fi
+
+if which feh > /dev/null;
+ then echo "feh Installed"
+ else echo "feh Not Installed"
+ exit
+fi
+
+#################################################################
 # Set some variables
 #################################################################
 directory=~/bing/
