@@ -25,7 +25,7 @@ fi
 # Set some variables
 #################################################################
 directory=~/wallpapers/bing/
-mkdir $directory
+mkdir -p $directory
 
 #Base Bing URL
 bing="www.bing.com"
