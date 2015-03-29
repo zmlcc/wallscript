@@ -21,11 +21,12 @@ if which feh > /dev/null;
  exit
 fi
 
+eval `cat ~/.fehbg`
 #################################################################
 # Set some variables
 #################################################################
-directory=~/wallpapers/bing/
-mkdir $directory
+directory=/home/lyc/shares/wallpapers
+mkdir -p $directory
 
 #Base Bing URL
 bing="www.bing.com"
@@ -85,8 +86,31 @@ else
 	wget -q -O $directory$pic_name $pic_default
 fi
 
+
 #################################################################
-# Set wallpaper in feh
+# Set wallpaper to picture just donwloaded
 #################################################################
 feh $options $directory$pic_name
+echo "set wallpaper to "$directory$pic_name
+
+
+interval="10s"
+#################################################################
+# Entering while loop to perodically change the wallpaper
+#################################################################
+while [ true ] 
+do
+echo "sleep for "$interval
+sleep $interval
+
+# Randomly pick a picture from the wallpaper directory
+ALIST=( `ls -w1 $directory` )
+RANGE=${#ALIST[@]}
+let "number = $RANDOM % $RANGE"
+
+# Set wallpaper in feh
+feh $options $directory/${ALIST[$number]}
+echo "set wallpaper to "$directory/${ALIST[$number]}
+done
+
 exit
