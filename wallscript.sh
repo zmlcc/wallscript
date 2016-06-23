@@ -1,10 +1,4 @@
 #!/bin/bash
-#################################################################
-#Ver.	Date		Name		Description		#
-#v0.1	2014-12-07	Marchione	Initial script		#
-#								#
-#								#
-#################################################################
 
 #################################################################
 # Check required programs are installed 
@@ -21,11 +15,10 @@ if which feh > /dev/null;
  exit
 fi
 
-eval `cat ~/.fehbg`
 #################################################################
 # Set some variables
 #################################################################
-directory=/home/lyc/shares/wallpapers
+directory=~/wallpaper/bing_wallpaper/
 mkdir -p $directory
 
 #Base Bing URL
@@ -46,16 +39,18 @@ number="&n=1"
 #"&mkt=de-DE"
 #"&mkt=en-NZ"
 #"&mkt=en-CA"
-market="&mkt=en-US"
+#"&mkt=en-US"
+market="&mkt=zh-CN"
 
 xmlURL=$bing"/HPImageArchive.aspx?format=xml"$day$number$market
+echo $xmlURL
 
 #Set resolution, other options are:
 #"_1024x768"
 #"_1280x720"
 #"_1366x768"
 #"_1920x1200"
-resolution="_1920x1080"
+resolution="_1366x768"
 
 #The file extension for the Bing pic
 extension=".jpg"
@@ -71,7 +66,7 @@ pic_default=$bing$(echo $(wget -q -O - $xmlURL) | grep -oP "<url>(.*)</url>" | c
 #--bg-center
 #--bg-max
 #--bg-fill
-options="--bg-scale"
+options="--bg-fill"
 
 #################################################################
 # Download the desired image resolution
@@ -93,24 +88,3 @@ fi
 feh $options $directory$pic_name
 echo "set wallpaper to "$directory$pic_name
 
-
-interval="10s"
-#################################################################
-# Entering while loop to perodically change the wallpaper
-#################################################################
-while [ true ] 
-do
-echo "sleep for "$interval
-sleep $interval
-
-# Randomly pick a picture from the wallpaper directory
-ALIST=( `ls -w1 $directory` )
-RANGE=${#ALIST[@]}
-let "number = $RANDOM % $RANGE"
-
-# Set wallpaper in feh
-feh $options $directory/${ALIST[$number]}
-echo "set wallpaper to "$directory/${ALIST[$number]}
-done
-
-exit
