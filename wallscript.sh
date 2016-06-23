@@ -15,6 +15,18 @@ if which feh > /dev/null;
  exit
 fi
 
+# default index
+idx=0
+
+while getopts "d:" arg
+do
+    case $arg in
+        d)
+            idx=$OPTARG
+    esac
+done
+
+
 #################################################################
 # Set some variables
 #################################################################
@@ -25,7 +37,7 @@ mkdir -p $directory
 bing="www.bing.com"
 
 #What day to start from. 0 is the current day,1 the previous day, etc...
-day="&idx=0"
+day="&idx=$idx"
 
 #Number of images to get
 #May change this script later to get more images and rotate between them
@@ -68,6 +80,9 @@ pic_default=$bing$(echo $(wget -q -O - $xmlURL) | grep -oP "<url>(.*)</url>" | c
 #--bg-fill
 options="--bg-fill"
 
+#default wallpaper
+default_wallpaper=~/wallpaper/wallpaper.jpg
+
 #################################################################
 # Download the desired image resolution
 # If it doesn't exist then download the default image resolution
@@ -85,6 +100,8 @@ fi
 #################################################################
 # Set wallpaper to picture just donwloaded
 #################################################################
-feh $options $directory$pic_name
+unlink $default_wallpaper
+ln -s $directory$pic_name $default_wallpaper
+feh $options $default_wallpaper
 echo "set wallpaper to "$directory$pic_name
 
